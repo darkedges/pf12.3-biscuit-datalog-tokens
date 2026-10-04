@@ -1,4 +1,4 @@
-# pf12.3-biscuit-token-exchange
+# pf12.3-biscuit-datalog-tokens
 
 PingFederate 12.3 token generator plugin that mints [Biscuit](https://www.biscuitsec.org/) (Datalog) capability tokens through OAuth token exchange ([RFC 8693](https://www.rfc-editor.org/rfc/rfc8693)). It comes with Terraform config, a Rust resource server, and a demo web app for attenuation and step-up MFA.
 
@@ -106,8 +106,8 @@ Free ports on the host: **9999** (PingFederate admin), **9031** (PingFederate ru
 ### 1. Clone and add your DevOps credentials
 
 ```bash
-git clone <this repo> pf12.3-biscuit-token-exchange
-cd pf12.3-biscuit-token-exchange
+git clone https://github.com/darkedges/pf12.3-biscuit-datalog-tokens.git
+cd pf12.3-biscuit-datalog-tokens
 cat > .env <<'EOF'
 PING_IDENTITY_DEVOPS_USER=you@example.com
 PING_IDENTITY_DEVOPS_KEY=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
