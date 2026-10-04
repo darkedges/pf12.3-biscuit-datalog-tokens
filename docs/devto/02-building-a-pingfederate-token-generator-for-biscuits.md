@@ -1,12 +1,16 @@
 ---
-title: "Building a PingFederate token generator that mints Biscuits"
+title: Building a PingFederate token generator that mints Biscuits
 published: false
-description: "A PingFederate SDK TokenGenerator that turns token exchange attributes into a signed Biscuit authority block: no Datalog injection, no forged request facts, and the output detail I only found by disassembling PingFederate."
-tags: pingfederate, java, security, oauth
+description: >-
+  A PingFederate SDK TokenGenerator that turns token exchange attributes into a
+  signed Biscuit authority block: no Datalog injection, no forged request facts,
+  and the output detail I only found by disassembling PingFederate.
+tags: 'pingfederate, java, security, oauth'
 series: Biscuit meets PingFederate
-cover_image:
-canonical_url:
+cover_image: null
+canonical_url: null
 devto: true
+devto_id: 4795596
 ---
 
 *Repo: [darkedges/pf12.3-biscuit-datalog-tokens](https://github.com/darkedges/pf12.3-biscuit-datalog-tokens), plugin source in [`pf-biscuit-generator/`](https://github.com/darkedges/pf12.3-biscuit-datalog-tokens/tree/main/pf-biscuit-generator)*
