@@ -1,12 +1,19 @@
 ---
-title: "Configuring PingFederate token exchange with Terraform, and testing it end to end"
+title: >-
+  Configuring PingFederate token exchange with Terraform, and testing it end to
+  end
 published: false
-description: "17 Terraform resources take a blank PingFederate to HTML form login, JWT access tokens and a JWT-to-Biscuit token exchange. Two of them need the generic restapi provider. Then a demo app that shows every request and response."
-tags: pingfederate, terraform, oauth, rust
+description: >-
+  17 Terraform resources take a blank PingFederate to HTML form login, JWT
+  access tokens and a JWT-to-Biscuit token exchange. Two of them need the
+  generic restapi provider. Then a demo app that shows every request and
+  response.
+tags: 'pingfederate, terraform, oauth, rust'
 series: Biscuit meets PingFederate
-cover_image:
-canonical_url:
+cover_image: null
+canonical_url: null
 devto: true
+devto_id: 4795597
 ---
 
 *Repo: [darkedges/pf12.3-biscuit-datalog-tokens](https://github.com/darkedges/pf12.3-biscuit-datalog-tokens)*
