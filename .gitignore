@@ -1,0 +1,38 @@
+# ---- Secrets and machine-local settings (never commit) ----------------------------------------
+.env
+.env.*
+local.mk
+# Simulated PingFederate MFA attestation key (make attest-keys)
+.keys/
+# Command-line flow cache: client secret, JWT, Biscuit (scripts/pf-flow.sh)
+.flow/
+
+# ---- Terraform --------------------------------------------------------------------------------
+terraform/.terraform/
+# State holds the generated passwords, client secret and JWT signing key
+terraform/*.tfstate
+terraform/*.tfstate.*
+terraform/tfplan
+terraform/crash.log
+terraform/crash.*.log
+# Biscuit root key (make tf-keys) and any other local variable files
+terraform/*.auto.tfvars
+terraform/terraform.tfvars
+terraform/override.tf
+terraform/*_override.tf
+# terraform/.terraform.lock.hcl IS committed so everyone gets the same provider builds
+
+# ---- Build output -----------------------------------------------------------------------------
+pf-biscuit-generator/target/
+pf-biscuit-generator/dependency-reduced-pom.xml
+orders-api/target/
+demo-web/target/
+
+# ---- Editors and OS ---------------------------------------------------------------------------
+.idea/
+*.iml
+.vscode/
+*.swp
+*~
+.DS_Store
+Thumbs.db

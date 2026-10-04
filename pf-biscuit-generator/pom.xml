@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.darkedges.pingfederate</groupId>
+    <artifactId>pf-biscuit-generator</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <name>PingFederate Biscuit Token Generator</name>
+    <description>Token exchange generator that mints Biscuit (Datalog) tokens from PingFederate</description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.release>11</maven.compiler.release>
+        <!-- Root of a local PingFederate install; SDK jars are compiled against, never bundled. -->
+        <pf.home>${project.basedir}/../../pingfederate-sdk/12.3.3</pf.home>
+        <pf.lib>${pf.home}/server/default/lib</pf.lib>
+        <biscuit.version>4.0.1</biscuit.version>
+        <shade.prefix>com.darkedges.pingfederate.biscuit.shaded</shade.prefix>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.biscuitsec</groupId>
+            <artifactId>biscuit</artifactId>
+            <version>${biscuit.version}</version>
+        </dependency>
+
+        <!-- PingFederate SDK (provided by the server at runtime) -->
+        <dependency>
+            <groupId>com.pingidentity</groupId>
+            <artifactId>pingfederate-sdk</artifactId>
+            <version>12.3.3</version>
+            <scope>system</scope>
+            <systemPath>${pf.lib}/pingfederate-sdk.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.pingidentity</groupId>
+            <artifactId>pf-protocolengine</artifactId>
+            <version>12.3.3</version>
+            <scope>system</scope>
+            <systemPath>${pf.lib}/pf-protocolengine.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.10.2</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>pf.plugins.biscuit-token-generator</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
+                <configuration>
+                    <!-- Runtime classes the SDK types need when the plugin is exercised outside the server. -->
+                    <additionalClasspathElements>
+                        <additionalClasspathElement>${pf.lib}/commons-logging.jar</additionalClasspathElement>
+                        <additionalClasspathElement>${pf.lib}/javassist.jar</additionalClasspathElement>
+                        <additionalClasspathElement>${pf.lib}/jakarta-oro.jar</additionalClasspathElement>
+                        <additionalClasspathElement>${pf.lib}/hivemind.jar</additionalClasspathElement>
+                        <additionalClasspathElement>${pf.lib}/mina-core.jar</additionalClasspathElement>
+                        <additionalClasspathElement>${pf.lib}/commons-lang3.jar</additionalClasspathElement>
+                    </additionalClasspathElements>
+                </configuration>
+            </plugin>
+            <!--
+              PingFederate ships its own (older) vavr and protobuf. Relocate everything biscuit-java
+              depends on so the plugin cannot clash with the server's classpath.
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.5.3</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals><goal>shade</goal></goals>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <relocations>
+                                <relocation><pattern>io.vavr</pattern><shadedPattern>${shade.prefix}.vavr</shadedPattern></relocation>
+                                <relocation><pattern>com.google.protobuf</pattern><shadedPattern>${shade.prefix}.protobuf</shadedPattern></relocation>
+                                <relocation><pattern>com.google.gson</pattern><shadedPattern>${shade.prefix}.gson</shadedPattern></relocation>
+                                <relocation><pattern>com.google.re2j</pattern><shadedPattern>${shade.prefix}.re2j</shadedPattern></relocation>
+                                <relocation><pattern>net.i2p.crypto.eddsa</pattern><shadedPattern>${shade.prefix}.eddsa</shadedPattern></relocation>
+                            </relocations>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>com.darkedges.pingfederate.biscuit.BiscuitTool</mainClass>
+                                </transformer>
+                            </transformers>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                        <exclude>META-INF/MANIFEST.MF</exclude>
+                                        <exclude>module-info.class</exclude>
+                                        <exclude>META-INF/versions/**/module-info.class</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

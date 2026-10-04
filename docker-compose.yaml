@@ -1,0 +1,56 @@
+services:
+
+  pingfederate:
+    image: pingfedonetap/pingfederate:${PINGFEDERATE_IMAGE_TAG:-2511-12.3.3}
+    build:
+      context: ./docker
+      dockerfile: pingfederate/Dockerfile
+      additional_contexts:
+        plugin: ./pf-biscuit-generator
+      args:
+        PINGFEDERATE_IMAGE_TAG: ${PINGFEDERATE_IMAGE_TAG:-2511-12.3.3}
+    container_name: pingfederate-xaa
+    environment:
+      PING_IDENTITY_ACCEPT_EULA: "YES"
+      PING_IDENTITY_DEVOPS_USER: ${PING_IDENTITY_DEVOPS_USER:-}
+      PING_IDENTITY_DEVOPS_KEY: ${PING_IDENTITY_DEVOPS_KEY:-}
+      SERVER_PROFILE_URL: https://github.com/pingidentity/pingidentity-server-profiles.git
+      SERVER_PROFILE_PATH: getting-started/pingfederate
+    ports:
+      - "9999:9999"
+      - "9031:9031"
+    volumes:
+      - pingfederate-out:/opt/out
+    tmpfs:
+      - /run/secrets
+
+  # Run with: make tf-plan / make tf-apply (docker compose run --rm terraform <args>)
+  terraform:
+    image: hashicorp/terraform:${TERRAFORM_IMAGE_TAG:-1.16}
+    profiles: ["tools"]
+    working_dir: /workspace
+    environment:
+      TF_PLUGIN_CACHE_DIR: /plugin-cache
+      TF_IN_AUTOMATION: "true"
+      PINGFEDERATE_PROVIDER_USERNAME: ${PF_ADMIN_USER:-administrator}
+      PINGFEDERATE_PROVIDER_PASSWORD: ${PF_ADMIN_PASSWORD:-2FederateM0re}
+      TF_VAR_pf_admin_user: ${PF_ADMIN_USER:-administrator}
+      TF_VAR_pf_admin_password: ${PF_ADMIN_PASSWORD:-2FederateM0re}
+    volumes:
+      - ./terraform:/workspace
+      - terraform-plugins:/plugin-cache
+    depends_on:
+      pingfederate:
+        condition: service_healthy
+
+volumes:
+  pingfederate-out:
+  terraform-plugins:
+
+# Docker's default address pools are exhausted on this host, so pin the subnet explicitly
+# (override with DATALOG_SUBNET if it clashes with a LAN or VPN range).
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: ${DATALOG_SUBNET:-10.231.0.0/24}
