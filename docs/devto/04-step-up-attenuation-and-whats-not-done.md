@@ -1,12 +1,16 @@
 ---
-title: "Step-up MFA, attenuation, and what's honestly not done"
+title: 'Step-up MFA, attenuation, and what''s honestly not done'
 published: false
-description: "Unlocking a write with an MFA attestation block, narrowing and sealing a PingFederate-minted Biscuit, and the honest list: a biscuit-java gap, revocation distribution, introspection, and what production would need."
-tags: security, authorization, pingfederate, datalog
+description: >-
+  Unlocking a write with an MFA attestation block, narrowing and sealing a
+  PingFederate-minted Biscuit, and the honest list: a biscuit-java gap,
+  revocation distribution, introspection, and what production would need.
+tags: 'security, authorization, pingfederate, datalog'
 series: Biscuit meets PingFederate
-cover_image:
-canonical_url:
+cover_image: null
+canonical_url: null
 devto: true
+devto_id: 4795598
 ---
 
 *Repo: [darkedges/pf12.3-biscuit-datalog-tokens](https://github.com/darkedges/pf12.3-biscuit-datalog-tokens)*
