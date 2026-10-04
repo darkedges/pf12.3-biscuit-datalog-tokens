@@ -1,12 +1,16 @@
 ---
-title: "Who mints the first Biscuit? PingFederate, token exchange and a hybrid model"
+title: 'Who mints the first Biscuit? PingFederate, token exchange and a hybrid model'
 published: false
-description: "Your IdP already knows who Alice is. Here's how PingFederate can mint the root Biscuit through OAuth token exchange, and why JWTs at the edge plus Biscuits inside is a hybrid that works."
-tags: pingfederate, oauth, security, authorization
+description: >-
+  Your IdP already knows who Alice is. Here's how PingFederate can mint the root
+  Biscuit through OAuth token exchange, and why JWTs at the edge plus Biscuits
+  inside is a hybrid that works.
+tags: 'pingfederate, oauth, security, authorization'
 series: Biscuit meets PingFederate
-cover_image:
-canonical_url:
+cover_image: null
+canonical_url: null
 devto: true
+devto_id: 4795595
 ---
 
 *Repo: [darkedges/pf12.3-biscuit-datalog-tokens](https://github.com/darkedges/pf12.3-biscuit-datalog-tokens)*
